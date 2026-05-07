@@ -1,0 +1,17 @@
+# Long cache for hashed build assets (Vite emits content-hashed filenames)
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML responses always re-validate so deploys are picked up immediately
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Standard security headers applied site-wide
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
