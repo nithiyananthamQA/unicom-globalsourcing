@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, NavLink } from "react-router";
+import { useEffect, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router";
 import ugsLogoFull from "../../assets/ugs-logo-full.png";
 
 const navLinks = [
@@ -11,21 +11,51 @@ const navLinks = [
   { to: "/contact", label: "Contact" },
 ];
 
+function useScrollProgress() {
+  const [progress, setProgress] = useState(0);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const update = () => {
+      const doc = document.documentElement;
+      const scrolled = window.scrollY;
+      const max = doc.scrollHeight - doc.clientHeight;
+      setProgress(max > 0 ? Math.min(100, (scrolled / max) * 100) : 0);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [pathname]);
+
+  return progress;
+}
+
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const progress = useScrollProgress();
 
   return (
     <header className="sticky top-0 z-50">
-      <div className="h-1 w-full bg-gradient-to-r from-[#0b3d6d] via-[#7cc4ff] to-[#0b3d6d]" />
+      {/* Scroll-progress bar (replaces the static gradient strip) */}
+      <div className="h-1 w-full bg-[#e6ecf3]">
+        <div
+          className="h-full bg-gradient-to-r from-[#0b3d6d] via-[#7cc4ff] to-[#0b3d6d] transition-[width] duration-100 ease-out"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
 
       <div className="bg-white shadow-sm">
         <div className="max-w-[1920px] mx-auto px-3 md:px-6 lg:px-10">
-          <div className="flex items-center justify-between h-16 md:h-24 lg:h-28">
+          <div className="flex items-center justify-between h-20 md:h-24 lg:h-28">
             <Link to="/" className="flex items-center flex-shrink-0">
               <img
                 src={ugsLogoFull}
                 alt="UGS - Unicom Globalsourcing Private Limited"
-                className="h-12 md:h-20 lg:h-24 w-auto object-contain block"
+                className="h-16 md:h-20 lg:h-24 w-auto object-contain block -translate-y-0.5 md:-translate-y-1"
               />
             </Link>
 
