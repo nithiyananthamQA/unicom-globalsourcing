@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0b3d6d" />
     <link rel="icon" type="image/png" href="/src/assets/ugs-logo-icon.png" />
+
+    <!-- Preconnect to media origins so DNS+TLS handshakes happen early -->
+    <link rel="preconnect" href="https://videos.pexels.com" crossorigin />
+    <link rel="preconnect" href="https://media.giphy.com" crossorigin />
+    <link rel="dns-prefetch" href="https://videos.pexels.com" />
+    <link rel="dns-prefetch" href="https://media.giphy.com" />
+
+    <!-- Preload the hero video on the homepage so byte-fetch runs in
+         parallel with the JS bundle download -->
+    <link
+      rel="preload"
+      as="video"
+      type="video/mp4"
+      href="https://videos.pexels.com/video-files/31370995/13386620_2560_1440_50fps.mp4"
+      fetchpriority="high"
+    />
+
     <meta name="author" content="UNICOM GLOBALSOURCING PRIVATE LIMITED" />
     <meta name="keywords" content="textile sourcing India, Coimbatore sourcing partner, hospitality linens, garment manufacturing India, home textiles, textile supply chain, UGS Unicom Globalsourcing" />
     <title>UGS — Unicom Globalsourcing | Strategic Sourcing & Supply Chain Partner</title>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router";
 import ugsLogoFull from "../../assets/ugs-logo-full.png";
 
@@ -11,40 +11,62 @@ const navLinks = [
   { to: "/contact", label: "Contact" },
 ];
 
-function useScrollProgress() {
-  const [progress, setProgress] = useState(0);
+/**
+ * Smooth scroll-progress bar that works reliably on mobile.
+ * - Writes directly to the DOM via a ref (no React re-renders on scroll)
+ * - Uses requestAnimationFrame so we update at most once per frame
+ * - Uses transform: scaleX() (compositor-only, no layout/paint)
+ * - Caches scrollHeight per route so iOS address-bar resize doesn't jitter
+ */
+function useScrollProgress(barRef: React.RefObject<HTMLDivElement | null>) {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const update = () => {
-      const doc = document.documentElement;
-      const scrolled = window.scrollY;
-      const max = doc.scrollHeight - doc.clientHeight;
-      setProgress(max > 0 ? Math.min(100, (scrolled / max) * 100) : 0);
-    };
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, [pathname]);
+    let raf = 0;
+    let pending = false;
 
-  return progress;
+    const update = () => {
+      pending = false;
+      const doc = document.documentElement;
+      const scrolled = window.scrollY || doc.scrollTop;
+      const max = doc.scrollHeight - window.innerHeight;
+      const p = max > 0 ? Math.min(1, Math.max(0, scrolled / max)) : 0;
+      if (barRef.current) {
+        barRef.current.style.transform = `scaleX(${p})`;
+      }
+    };
+
+    const onScroll = () => {
+      if (pending) return;
+      pending = true;
+      raf = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [pathname, barRef]);
 }
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const progress = useScrollProgress();
+  const progressRef = useRef<HTMLDivElement | null>(null);
+  useScrollProgress(progressRef);
 
   return (
     <header className="sticky top-0 z-50">
-      {/* Scroll-progress bar (replaces the static gradient strip) */}
-      <div className="h-1 w-full bg-[#e6ecf3]">
+      {/* Scroll-progress bar — uses scaleX transform (compositor-only) so
+          it stays smooth on mobile even during touch-momentum scroll */}
+      <div className="h-1 w-full bg-[#e6ecf3] overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-[#0b3d6d] via-[#7cc4ff] to-[#0b3d6d] transition-[width] duration-100 ease-out"
-          style={{ width: `${progress}%` }}
+          ref={progressRef}
+          className="h-full w-full origin-left bg-gradient-to-r from-[#0b3d6d] via-[#7cc4ff] to-[#0b3d6d]"
+          style={{ transform: "scaleX(0)", willChange: "transform" }}
         />
       </div>
 
