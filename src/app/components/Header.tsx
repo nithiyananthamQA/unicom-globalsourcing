@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
 import ugsLogoFull from "../../assets/ugs-logo-full.png";
-import ugsLogoIcon from "../../assets/ugs-logo-icon.png";
 
 const navLinks = [
   { to: "/", label: "Home", end: true },
@@ -41,20 +40,12 @@ export function Header() {
             }`}
           >
             <Link to="/" className="flex items-center flex-shrink-0">
-              {/* Mobile: icon-only logo (transparent bg) */}
-              <img
-                src={ugsLogoIcon}
-                alt="UGS"
-                className={`md:hidden w-auto object-contain transition-all duration-300 ${
-                  scrolled ? "h-14" : "h-16"
-                }`}
-              />
-              {/* Desktop: full wordmark logo (transparent bg) */}
+              {/* Full wordmark logo across all breakpoints */}
               <img
                 src={ugsLogoFull}
                 alt="UGS - Unicom Globalsourcing Private Limited"
-                className={`hidden md:block w-auto object-contain transition-all duration-300 ${
-                  scrolled ? "h-14 lg:h-16" : "h-16 lg:h-20"
+                className={`w-auto object-contain transition-all duration-300 ${
+                  scrolled ? "h-10 md:h-14 lg:h-16" : "h-12 md:h-16 lg:h-20"
                 }`}
               />
             </Link>
