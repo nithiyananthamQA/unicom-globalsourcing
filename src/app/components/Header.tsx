@@ -19,13 +19,13 @@ export function Header() {
       <div className="h-1 w-full bg-gradient-to-r from-[#0b3d6d] via-[#7cc4ff] to-[#0b3d6d]" />
 
       <div className="bg-white shadow-sm">
-        <div className="max-w-[1920px] mx-auto pl-2 pr-5 md:pl-4 md:pr-10 lg:pl-6 lg:pr-16">
+        <div className="max-w-[1920px] mx-auto px-3 md:px-6 lg:px-10">
           <div className="flex items-center justify-between h-16 md:h-24 lg:h-28">
-            <Link to="/" className="flex items-center flex-shrink-0 -ml-1 md:-ml-2">
+            <Link to="/" className="flex items-center flex-shrink-0">
               <img
                 src={ugsLogoFull}
                 alt="UGS - Unicom Globalsourcing Private Limited"
-                className="h-12 md:h-20 lg:h-24 w-auto object-contain"
+                className="h-12 md:h-20 lg:h-24 w-auto object-contain block"
               />
             </Link>
 
