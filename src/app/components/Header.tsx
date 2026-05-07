@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, NavLink } from "react-router";
 import ugsLogoFull from "../../assets/ugs-logo-full.png";
 
@@ -13,40 +13,19 @@ const navLinks = [
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   return (
     <header className="sticky top-0 z-50">
       <div className="h-1 w-full bg-gradient-to-r from-[#0b3d6d] via-[#7cc4ff] to-[#0b3d6d]" />
 
-      <div
-        className={`transition-all duration-300 ${
-          scrolled
-            ? "bg-white/95 backdrop-blur-md shadow-md"
-            : "bg-white shadow-sm"
-        }`}
-      >
+      <div className="bg-white shadow-sm">
         <div className="max-w-[1920px] mx-auto px-5 md:px-10 lg:px-16">
-          <div
-            className={`flex items-center justify-between transition-all duration-300 ${
-              scrolled ? "h-20 lg:h-24" : "h-24 lg:h-28"
-            }`}
-          >
+          <div className="flex items-center justify-between h-14 md:h-20 lg:h-24">
             <Link to="/" className="flex items-center flex-shrink-0">
-              {/* Full wordmark logo across all breakpoints */}
               <img
                 src={ugsLogoFull}
                 alt="UGS - Unicom Globalsourcing Private Limited"
-                className={`w-auto object-contain transition-all duration-300 ${
-                  scrolled ? "h-10 md:h-14 lg:h-16" : "h-12 md:h-16 lg:h-20"
-                }`}
+                className="h-8 md:h-12 lg:h-16 w-auto object-contain"
               />
             </Link>
 
@@ -107,7 +86,7 @@ export function Header() {
               aria-label="Toggle menu"
             >
               <svg
-                className="w-7 h-7 text-[#0b3d6d]"
+                className="w-6 h-6 text-[#0b3d6d]"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
