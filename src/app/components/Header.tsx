@@ -20,12 +20,12 @@ export function Header() {
 
       <div className="bg-white shadow-sm">
         <div className="max-w-[1920px] mx-auto px-5 md:px-10 lg:px-16">
-          <div className="flex items-center justify-between h-14 md:h-20 lg:h-24">
+          <div className="flex items-center justify-between h-16 md:h-24 lg:h-28">
             <Link to="/" className="flex items-center flex-shrink-0">
               <img
                 src={ugsLogoFull}
                 alt="UGS - Unicom Globalsourcing Private Limited"
-                className="h-8 md:h-12 lg:h-16 w-auto object-contain"
+                className="h-12 md:h-20 lg:h-24 w-auto object-contain"
               />
             </Link>
 
